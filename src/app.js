@@ -55,11 +55,12 @@ app.post("/movies", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO movies (title, genre, age, rating, image ) VALUES($1, $2, $3, $4, $5 )",
+      "INSERT INTO movies (title, genre, age, rating, image ) VALUES($1, $2, $3, $4, $5 ) RETURNING *",
       [title, genre, age, rating, image]
     );
     res.status(201).json({
       message: "pelicula creada exitosamente",
+      body: result.rows[0],
     });
   } catch (error) {
     res.status(500).json({
